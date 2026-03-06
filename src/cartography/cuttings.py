@@ -23,7 +23,8 @@ class Cuttings:
         self.__reference = reference
 
         # Fields
-        self.__r_fields = ['ts_id', 'catchment_id', 'latitude', 'longitude', 'geometry']
+        self.__r_fields = ['ts_id', 'catchment_id', 'catchment_name', 'station_name', 'river_name',
+                           'latitude', 'longitude', 'geometry']
 
     def __is_member(self, _polygon: shapely.geometry.polygon.Polygon):
         """

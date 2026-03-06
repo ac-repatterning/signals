@@ -11,6 +11,7 @@ import src.cartography.cuttings
 import src.cartography.temporary
 import src.elements.system as stm
 import src.functions.cache
+import src.cartography.illustrate
 
 
 class Members:
@@ -111,6 +112,10 @@ class Members:
             self.__exit()
 
         logging.info(latest)
+        latest.info()
         logging.info(members)
+        members.info()
+
+        src.cartography.illustrate.Illustrate(data=members, latest=latest).exc()
 
         return members

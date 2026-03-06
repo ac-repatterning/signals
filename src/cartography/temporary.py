@@ -37,7 +37,6 @@ class Temporary:
             frame['warningId'] = str(uuid.uuid4())
             frame['validFromDate'] = baseline + datetime.timedelta(minutes=self.__minutes)
             frame['validToDate'] = baseline + datetime.timedelta(minutes=3*self.__minutes)
-            frame.info()
             return frame
         except FileNotFoundError as err:
             raise err from err

@@ -1,10 +1,9 @@
 """Module cuttings.py"""
 import datetime
+import zoneinfo
 
 import geopandas
 import pandas as pd
-
-import zoneinfo
 import shapely
 
 import src.elements.system as stm
@@ -26,10 +25,6 @@ class Cuttings:
         # Fields
         self.__r_fields = ['ts_id', 'catchment_id', 'latitude', 'longitude', 'geometry']
 
-        # Time & Place
-        self.__adv = zoneinfo.ZoneInfo('UTC')
-        # self.__place = pytz.timezone('UTC')
-
     def __is_member(self, _polygon: shapely.geometry.polygon.Polygon):
         """
         Determines whether a reference gauge location lies within a polygon; per reference gauge
@@ -40,7 +35,8 @@ class Cuttings:
 
         return self.__reference.geometry.apply(lambda y: y.within(_polygon))
 
-    def __timestamp(self, value: pd.Timestamp) -> datetime.datetime:
+    @staticmethod
+    def __timestamp(value: pd.Timestamp) -> datetime.datetime:
         """
 
         :param value:
@@ -48,10 +44,8 @@ class Cuttings:
         """
 
         _initial = value.to_pydatetime()
-        # _free = datetime.datetime.fromtimestamp(_initial.timestamp(), tz=None)
-        __free = datetime.datetime.fromtimestamp(_initial.timestamp(), tz=self.__adv)
+        __free = datetime.datetime.fromtimestamp(_initial.timestamp(), tz=zoneinfo.ZoneInfo('UTC'))
 
-        # return self.__place.localize(_free)
         return __free
 
     def members(self, _elements: stm.System) -> geopandas.GeoDataFrame:

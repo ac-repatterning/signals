@@ -3,7 +3,8 @@ import datetime
 
 import geopandas
 import pandas as pd
-import pytz
+
+import zoneinfo
 import shapely
 
 import src.elements.system as stm
@@ -26,7 +27,8 @@ class Cuttings:
         self.__r_fields = ['ts_id', 'catchment_id', 'latitude', 'longitude', 'geometry']
 
         # Time & Place
-        self.__place = pytz.timezone('UTC')
+        self.__adv = zoneinfo.ZoneInfo('UTC')
+        # self.__place = pytz.timezone('UTC')
 
     def __is_member(self, _polygon: shapely.geometry.polygon.Polygon):
         """
@@ -46,9 +48,11 @@ class Cuttings:
         """
 
         _initial = value.to_pydatetime()
-        _free = datetime.datetime.fromtimestamp(_initial.timestamp(), tz=None)
+        # _free = datetime.datetime.fromtimestamp(_initial.timestamp(), tz=None)
+        __free = datetime.datetime.fromtimestamp(_initial.timestamp(), tz=self.__adv)
 
-        return self.__place.localize(_free)
+        # return self.__place.localize(_free)
+        return __free
 
     def members(self, _elements: stm.System) -> geopandas.GeoDataFrame:
         """

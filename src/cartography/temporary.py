@@ -3,7 +3,8 @@ import datetime
 import uuid
 
 import geopandas
-import pytz
+
+import zoneinfo
 
 import config
 
@@ -29,7 +30,8 @@ class Temporary:
         :return:
         """
 
-        baseline = datetime.datetime.now(pytz.utc)
+        # baseline = datetime.datetime.now(pytz.utc)
+        baseline = datetime.datetime.now(zoneinfo.ZoneInfo('UTC'))
 
         try:
             frame = geopandas.read_file(

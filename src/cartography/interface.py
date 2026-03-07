@@ -4,7 +4,7 @@ import geopandas
 import numpy as np
 
 import src.cartography.latest
-import src.cartography.members
+import src.cartography.data
 import src.cartography.reference
 import src.cartography.times
 import src.cartography.updating
@@ -86,7 +86,7 @@ class Interface:
             connector=self.__connector, arguments=self.__arguments).exc()
 
         # Do any of the warnings apply to gauges within Scotland
-        data: geopandas.GeoDataFrame = src.cartography.members.Members(
+        data: geopandas.GeoDataFrame = src.cartography.data.Data(
             arguments=self.__arguments).exc(latest=latest, reference=reference)
 
         # Update the warnings data library

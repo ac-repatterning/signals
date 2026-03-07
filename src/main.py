@@ -21,14 +21,14 @@ def main():
     # Investigate Warnings
     data: geopandas.GeoDataFrame = src.cartography.interface.Interface(
         connector=connector, arguments=arguments, s3_parameters=s3_parameters).exc()
-    logger.info(data.shape)
+    logger.info(data)
 
     # Transfer
-    # src.transfer.interface.Interface(service=service, s3_parameters=s3_parameters).exc()
+    src.transfer.interface.Interface(service=service, s3_parameters=s3_parameters).exc()
 
     # Hence, orchestrate and launch a system
-    # src.compute.interface.Interface(
-    #     connector=connector, arguments=arguments).exc(data=data.copy())
+    src.compute.interface.Interface(
+        connector=connector, arguments=arguments).exc(data=data.copy())
 
     # Delete Cache Points
     src.functions.cache.Cache().exc()

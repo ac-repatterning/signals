@@ -29,6 +29,7 @@ class Latest:
         # Instances
         self.__secret = src.functions.secret.Secret(connector=self.__connector)
 
+    # pylint: disable=C2801
     @staticmethod
     def __data(page: ElTree.Element, headers: dict) -> geopandas.GeoDataFrame:
         """

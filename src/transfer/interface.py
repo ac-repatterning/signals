@@ -38,7 +38,7 @@ class Interface:
         """
 
         # Does a warning-period-times file exist?
-        indices = strings['key'].str.contains('times.json', case=False, regex=True)
+        indices = strings['key'].str.contains('times.json|latest.html', case=False, regex=True)
         frame = strings.copy().loc[indices, ['file', 'key', 'metadata']]
 
         # If it does ...

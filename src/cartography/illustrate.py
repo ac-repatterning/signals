@@ -41,20 +41,20 @@ class Illustrate:
         :return:
         """
 
-        fields = ['warningLikelihood', 'warningLevel', 'warningStatus', 'warningHeadline',
-                  'affectedAreas', 'warningImpact', 'geometry']
-
         # Base Layer: TileLayer objects aid the security of map service details.
         segments = folium.Map(location=[self.__c_latitude, self.__c_longitude], zoom_start=7)
 
         # Uncontrollable Layer
+        fields = ['warningLikelihood', 'warningLevel', 'warningStatus', 'warningHeadline',
+                  'affectedAreas', 'warningImpact', 'geometry']
         folium.GeoJson(
             data=self.__latest[fields].to_crs(epsg=3857),
             name='Boundaries',
             style_function=lambda feature: {
                 "fillColor": "#598BAF", "color": "#598BAF", "opacity": 0.95, "weight": 0.25, "dashArray": "2"
             },
-            tooltip=folium.GeoJsonTooltip(fields=["warningLevel"], aliases=["Warning Level"]),
+            tooltip=folium.GeoJsonTooltip(fields=["warningLevel", "warningLikelihood", "warningStatus"],
+                                          aliases=["Warning Level", "Warning Likelihood", "Warning Status"]),
             control=False,
             highlight_function=lambda feature: {
                 "fillColor": "#6b8e23", "fillOpacity": 0.1
@@ -63,8 +63,6 @@ class Illustrate:
 
         # Gauge Stations
         instances = self.__data.copy()[['catchment_name', 'station_name', 'river_name', 'latitude', 'longitude', 'geometry']]
-
-        # Draw
         on_each_feature = folium.utilities.JsCode(self.__metadata())
         folium.GeoJson(
             data = instances.to_crs(epsg=3857),

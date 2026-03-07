@@ -1,4 +1,4 @@
-"""Module members.py"""
+"""Module data.py"""
 import logging
 import os
 import sys
@@ -14,7 +14,7 @@ import src.functions.cache
 import src.cartography.illustrate
 
 
-class Members:
+class Data:
     """
     Members
     """

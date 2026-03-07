@@ -1,12 +1,11 @@
 """Module compute/interface.py"""
 import datetime
 import logging
+import zoneinfo
 
 import boto3
 import geopandas
 import pandas as pd
-
-import zoneinfo
 
 import src.compute.schedule
 import src.compute.settings
@@ -27,9 +26,6 @@ class Interface:
 
         self.__connector = connector
         self.__arguments = arguments
-
-        # Time & Place
-        # self.__place = pytz.timezone('Europe/Dublin')
 
     @staticmethod
     def __timestamp(value: pd.Timestamp) -> datetime.datetime:
@@ -67,7 +63,7 @@ class Interface:
         # Cloud Compute Times: The data times and the cloud compute times exist within different zones
         value: pd.Timestamp = max(data['starting'].min(), pd.Timestamp(datetime.datetime.now(), tz='UTC'))
         value: pd.Timestamp = value.ceil(freq='h')
-        starting = self.__timestamp(value = value + datetime.timedelta(minutes=10))
+        starting = self.__timestamp(value = value)
         ending = self.__timestamp(value = max(data['ending'].max().ceil(freq='h'), value + datetime.timedelta(hours=1)))
 
         # Schedule Client

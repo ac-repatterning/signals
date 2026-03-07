@@ -1,10 +1,9 @@
 """Module algorithms/interface.py"""
 import boto3
 import geopandas
-import numpy as np
 
-import src.cartography.latest
 import src.cartography.data
+import src.cartography.latest
 import src.cartography.reference
 import src.cartography.times
 import src.cartography.updating
@@ -30,42 +29,6 @@ class Interface:
         self.__connector = connector
         self.__s3_parameters = s3_parameters
         self.__arguments = arguments
-
-    @staticmethod
-    def __filtering(data: geopandas.GeoDataFrame):
-        """
-
-        :param data:
-        :return:
-        """
-
-        if sum(data['warning_level'].str.upper() == 'RED') > 0:
-            instances = data.copy().loc[data['warning_level'].str.upper() == 'RED', :]
-        elif sum(data['warning_level'].str.upper() == 'AMBER') > 0:
-            instances = data.copy().loc[data['warning_level'].str.upper() == 'AMBER', :]
-        else:
-            instances = data.copy()
-
-        return instances
-
-    def __limiting(self, data: geopandas.GeoDataFrame) -> geopandas.GeoDataFrame:
-        """
-
-        :param data:
-        :return:
-        """
-
-        # The number of catchments to focus on.  This will not apply we switch to
-        # the architecture that has a separate inference module.
-        limit = self.__arguments.get('n_catchments_limit')
-
-        # Hence
-        catchments = data['catchment_id'].unique()
-        if catchments.shape[0] > limit:
-            excerpt = np.sort(catchments, axis=-1)[-limit:]
-            data = data.copy().loc[data['catchment_id'].isin(excerpt), :]
-
-        return data
 
     def exc(self) -> geopandas.GeoDataFrame:
         """

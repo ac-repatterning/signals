@@ -92,7 +92,7 @@ class Data:
         if latest.empty & (not self.__arguments.get('testing')):
             self.__exit()
 
-        # Placeholders
+        # Placeholder
         data = geopandas.GeoDataFrame()
 
         # Hence
@@ -110,11 +110,6 @@ class Data:
 
         if data.empty:
             self.__exit()
-
-        logging.info(latest)
-        latest.info()
-        logging.info(data)
-        data.info()
 
         src.cartography.illustrate.Illustrate(data=data, latest=latest).exc()
 

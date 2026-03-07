@@ -8,10 +8,10 @@ import pandas as pd
 
 import config
 import src.cartography.cuttings
+import src.cartography.illustrate
 import src.cartography.temporary
 import src.elements.system as stm
 import src.functions.cache
-import src.cartography.illustrate
 
 
 class Data:
@@ -103,7 +103,7 @@ class Data:
 
         # Or
         if data.empty & self.__arguments.get('testing'):
-            latest = src.cartography.temporary.Temporary().__call__()
+            latest = src.cartography.temporary.Temporary()()
             self.__persist(data=latest)
             latest: geopandas.GeoDataFrame = latest.to_crs(epsg=int(reference.crs.srs.split(':')[1]))
             data = self.__members(latest=latest, reference=reference)

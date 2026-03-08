@@ -1,4 +1,4 @@
-name: 'Hydrography: Warning'
+name: 'Hydrography: Signals'
 
 on: [push]
 

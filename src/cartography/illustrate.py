@@ -1,14 +1,16 @@
 """Module illustrate.py"""
-
+import logging
 import os
 
 import folium
 import folium.plugins
+import pandas as pd
 import geopandas
 
 import config
 import src.cartography.centroids
 import src.cartography.metadata
+import src.cartography.membership
 
 
 class Illustrate:
@@ -23,7 +25,9 @@ class Illustrate:
         :param latest: The overarching catchments
         """
 
-        self.__data = data
+
+        self.__data, self.__colour = src.cartography.membership.Membership().exc(data=data)
+
         self.__latest = latest
 
         # Configurations
@@ -33,7 +37,7 @@ class Illustrate:
         self.__metadata = src.cartography.metadata.Metadata()
 
         # Centroid
-        self.__c_latitude, self.__c_longitude = src.cartography.centroids.Centroids(blob=self.__data).__call__()
+        self.__c_latitude, self.__c_longitude = src.cartography.centroids.Centroids(blob=self.__data)()
 
     def exc(self) -> str:
         """
@@ -51,24 +55,30 @@ class Illustrate:
             data=self.__latest[fields].to_crs(epsg=3857),
             name='Boundaries',
             style_function=lambda feature: {
-                "fillColor": "#598BAF", "color": "#598BAF", "opacity": 0.95, "weight": 0.25, "dashArray": "2"
-            },
+                "fillColor": "#598BAF", "color": "#598BAF", "opacity": 0.95, "weight": 0.25, "dashArray": "2"},
             tooltip=folium.GeoJsonTooltip(fields=["warningLevel", "warningLikelihood", "warningStatus"],
                                           aliases=["Warning Level", "Warning Likelihood", "Warning Status"]),
             control=False,
             highlight_function=lambda feature: {
-                "fillColor": "#6b8e23", "fillOpacity": 0.1
-            }
+                "fillColor": "#6b8e23", "fillOpacity": 0.1}
         ).add_to(segments)
 
         # Gauge Stations
-        instances = self.__data.copy()[['catchment_name', 'station_name', 'river_name', 'latitude', 'longitude', 'geometry']]
+        for c in self.__data.columns:
+            if self.__data[c].dtype == pd.Timestamp:
+                logging.info('TIMESTAMP: %s', c)
+
+        instances = self.__data.copy()[['catchment_name', 'station_name', 'river_name',
+                                        'latitude', 'longitude', 'decimal', 'geometry']]
         on_each_feature = folium.utilities.JsCode(self.__metadata())
         folium.GeoJson(
             data = instances.to_crs(epsg=3857),
             name = 'Gauge Stations',
             marker=folium.CircleMarker(
-                radius=11.5, weight=4, stroke=False, fill=True, fillColor='#000000', fillOpacity=0.85, ),
+                radius=11.5, weight=4, stroke=False, fill=True, fillColor='#000000', fillOpacity=0.85),
+            style_function=lambda feature: {
+                "fillColor": self.__colour(feature['properties']['decimal'])
+            },
             zoom_on_click=True,
             on_each_feature=on_each_feature,
             show=True

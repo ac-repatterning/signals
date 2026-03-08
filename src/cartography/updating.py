@@ -46,7 +46,7 @@ class Updating:
             blob=instances,
             path=os.path.join(
                 self.__configurations.warehouse,
-                self.__configurations.warning_data_.replace('/', os.sep)))
+                self.__configurations.signals_data_.replace('/', os.sep)))
 
     def exc(self, data: pd.DataFrame) -> str:
         """
@@ -56,6 +56,6 @@ class Updating:
         """
 
         data.drop(columns='geometry', inplace=True)
-        uri = f's3://{self.__s3_parameters.internal}/{self.__configurations.warning_data_}'
+        uri = f's3://{self.__s3_parameters.internal}/{self.__configurations.signals_data_}'
 
         return self.__update(uri=uri, data=data)

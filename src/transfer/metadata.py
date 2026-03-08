@@ -21,7 +21,7 @@ class Metadata:
             "_latest.geojson": {
                 "desc": "The latest geospatial warning data."
             },
-            "data.csv": {
+            "_data.csv": {
                 'ts_id': 'The unique identification of the time series of a gauge.',
                  'catchment_id': 'A catchment identification code.',
                  'latitude': 'Latitude',

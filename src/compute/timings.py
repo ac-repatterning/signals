@@ -35,7 +35,7 @@ class Timings:
         expression = "cron({minute} {initial},{later} * * ? *)"
 
         # Arithmetic
-        start = self.__starting + datetime.timedelta(minutes=25)
+        start = self.__starting + datetime.timedelta(minutes=15)
         additional = start + datetime.timedelta(hours=12)
 
         # Hence

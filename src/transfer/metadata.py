@@ -12,11 +12,14 @@ class Metadata:
         """
 
         self.metadata = {
-            "latest.geojson": {
-                "desc": "The latest geospatial warning data."
-            },
             "times.json": {
                 "desc": "The starting and ending times of the latest warning."
+            },
+            "latest.html": {
+                "desc": "The latest geospatial map.",
+            },
+            "latest.geojson": {
+                "desc": "The latest geospatial warning data."
             },
             "data.csv": {
                 'ts_id': 'The unique identification of the time series of a gauge.',

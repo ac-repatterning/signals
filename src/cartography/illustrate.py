@@ -91,7 +91,7 @@ class Illustrate:
         ).add_to(segments)
 
         # Persist
-        outfile = os.path.join(self.__configurations.warning_, 'latest.html')
+        outfile = os.path.join(self.__configurations.warning_, '_latest.html')
         segments.save(outfile=outfile)
 
         return f'{os.path.basename(outfile)}'

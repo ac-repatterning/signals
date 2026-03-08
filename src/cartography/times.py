@@ -47,7 +47,7 @@ class Times:
         self.__logger.info(nodes)
 
         # Storage
-        path = os.path.join(self.__configurations.warning_, 'times.json')
+        path = os.path.join(self.__configurations.warning_, '_times.json')
 
         # Persist
         objects = src.functions.objects.Objects()

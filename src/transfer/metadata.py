@@ -12,13 +12,13 @@ class Metadata:
         """
 
         self.metadata = {
-            "times.json": {
+            "_times.json": {
                 "desc": "The starting and ending times of the latest warning."
             },
-            "latest.html": {
+            "_latest.html": {
                 "desc": "The latest geospatial map.",
             },
-            "latest.geojson": {
+            "_latest.geojson": {
                 "desc": "The latest geospatial warning data."
             },
             "data.csv": {

@@ -34,7 +34,7 @@ class Config:
         self.argument_key = 'warning/_arguments.json'
         self.prefix: str = 'warning'
         self.warning_data_ = f'{self.prefix}/data.csv'
-        self.warning_latest_ = f'{self.prefix}/latest.geojson'
+        self.warning_latest_ = f'{self.prefix}/_latest.geojson'
 
         # Project metadata
         self.project_tag = 'hydrography'

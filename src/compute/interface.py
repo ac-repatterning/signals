@@ -61,7 +61,7 @@ class Interface:
         """
 
         # Cloud Compute Times: The data times and the cloud compute times exist within different zones
-        value: pd.Timestamp = max(data['starting'].min(), pd.Timestamp(datetime.datetime.now(), tz='UTC'))
+        value: pd.Timestamp = max(data['starting'].min(), pd.Timestamp(datetime.datetime.now(), tz=zoneinfo.ZoneInfo('UTC')))
         value: pd.Timestamp = value.ceil(freq='h')
         starting = self.__timestamp(value = value)
         ending = self.__timestamp(value = max(data['ending'].max().ceil(freq='h'), value + datetime.timedelta(hours=1)))

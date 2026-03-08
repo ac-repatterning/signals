@@ -27,14 +27,14 @@ class Config:
 
         # Directories
         self.warehouse: str = os.path.join(os.getcwd(), 'warehouse')
-        self.warning_ = os.path.join(self.warehouse, 'warning')
+        self.signals_ = os.path.join(self.warehouse, 'signals')
 
         # Keys, etc
         self.s3_parameters_key = 's3_parameters.yaml'
-        self.argument_key = 'warning/_arguments.json'
-        self.prefix: str = 'warning'
-        self.warning_data_ = f'{self.prefix}/_data.csv'
-        self.warning_latest_ = f'{self.prefix}/_latest.geojson'
+        self.argument_key = 'signals/_arguments.json'
+        self.prefix: str = 'signals'
+        self.signals_data_ = f'{self.prefix}/_data.csv'
+        self.signals_latest_ = f'{self.prefix}/_latest.geojson'
 
         # Project metadata
         self.project_tag = 'hydrography'

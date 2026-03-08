@@ -70,6 +70,8 @@ class Illustrate:
 
         instances = self.__data.copy()[['catchment_name', 'station_name', 'river_name',
                                         'latitude', 'longitude', 'decimal', 'geometry']]
+
+        '''
         on_each_feature = folium.utilities.JsCode(self.__metadata())
         folium.GeoJson(
             data = instances.to_crs(epsg=3857),
@@ -83,7 +85,27 @@ class Illustrate:
             on_each_feature=on_each_feature,
             show=True
         ).add_to(segments)
+        '''
 
+        clustering = folium.plugins.MarkerCluster(overlay=True, control=False, name='Gauge Stations',
+                                                  options={'maxClusterRadius': 60})
+        for i in range(instances.shape[0]):
+            marking = folium.Marker(
+                location=[instances.iloc[i]['latitude'], instances.iloc[i]['longitude']],
+                popup= '<b>' + instances.iloc[i]['station_name'] + '</b><br>' +
+                         instances.iloc[i]['catchment_name'] + '<br>' + instances.iloc[i]['river_name'],
+                icon=folium.Icon(
+                    prefix='fa', icon='circle', icon_size=(0.5,0.5), color='white',
+                    icon_color=self.__colour(instances.iloc[i]['decimal']))
+            )
+            clustering.add_child(marking)
+        clustering.add_to(segments)
+
+
+
+
+
+        # Control Layer
         folium.LayerControl().add_to(segments)
 
         # Drawing Tool

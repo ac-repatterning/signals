@@ -4,12 +4,11 @@ import os
 
 import folium
 import folium.plugins
-import pandas as pd
 import geopandas
+import pandas as pd
 
 import config
 import src.cartography.centroids
-import src.cartography.metadata
 import src.cartography.membership
 
 
@@ -25,16 +24,11 @@ class Illustrate:
         :param latest: The overarching catchments
         """
 
-
         self.__data, self.__colour = src.cartography.membership.Membership().exc(data=data)
-
         self.__latest = latest
 
         # Configurations
         self.__configurations = config.Config()
-
-        # Metadata: Gauge Station
-        self.__metadata = src.cartography.metadata.Metadata()
 
         # Centroid
         self.__c_latitude, self.__c_longitude = src.cartography.centroids.Centroids(blob=self.__data)()
@@ -71,22 +65,6 @@ class Illustrate:
         instances = self.__data.copy()[['catchment_name', 'station_name', 'river_name',
                                         'latitude', 'longitude', 'decimal', 'geometry']]
 
-        '''
-        on_each_feature = folium.utilities.JsCode(self.__metadata())
-        folium.GeoJson(
-            data = instances.to_crs(epsg=3857),
-            name = 'Gauge Stations',
-            marker=folium.CircleMarker(
-                radius=11.5, weight=4, stroke=False, fill=True, fillColor='#000000', fillOpacity=0.85),
-            style_function=lambda feature: {
-                "fillColor": self.__colour(feature['properties']['decimal'])
-            },
-            zoom_on_click=True,
-            on_each_feature=on_each_feature,
-            show=True
-        ).add_to(segments)
-        '''
-
         clustering = folium.plugins.MarkerCluster(overlay=True, control=False, name='Gauge Stations',
                                                   options={'maxClusterRadius': 60})
         for i in range(instances.shape[0]):
@@ -100,10 +78,6 @@ class Illustrate:
             )
             clustering.add_child(marking)
         clustering.add_to(segments)
-
-
-
-
 
         # Control Layer
         folium.LayerControl().add_to(segments)

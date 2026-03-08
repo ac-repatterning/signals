@@ -33,7 +33,7 @@ class Config:
         self.s3_parameters_key = 's3_parameters.yaml'
         self.argument_key = 'warning/_arguments.json'
         self.prefix: str = 'warning'
-        self.warning_data_ = f'{self.prefix}/data.csv'
+        self.warning_data_ = f'{self.prefix}/_data.csv'
         self.warning_latest_ = f'{self.prefix}/_latest.geojson'
 
         # Project metadata

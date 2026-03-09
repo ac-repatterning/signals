@@ -30,7 +30,7 @@ class Setup:
 
         self.__directories.cleanup(path=self.__configurations.warehouse)
 
-        return self.__directories.create(path=self.__configurations.warning_)
+        return self.__directories.create(path=self.__configurations.signals_)
 
     def exc(self) -> bool:
         """

@@ -68,12 +68,12 @@ class Illustrate:
         clustering = folium.plugins.MarkerCluster(overlay=True, control=False, name='Gauge Stations',
                                                   options={'maxClusterRadius': 60})
         for i in range(instances.shape[0]):
+            river_name = instances.iloc[i]['river_name'] if isinstance(instances.iloc[i]['river_name'], str) else ''
             marking = folium.Marker(
                 location=[instances.iloc[i]['latitude'], instances.iloc[i]['longitude']],
                 popup= '<b>' + instances.iloc[i]['station_name'] + '</b><br><br><b>Catchment: </b>' +
                        instances.iloc[i]['catchment_name'] + '<br><br><b>River/Water: </b>' +
-                       instances.iloc[i]['river_name'] +
-                       '<br>',
+                       river_name + '<br>',
                 icon=folium.Icon(
                     prefix='fa', icon='circle', icon_size=(0.5,0.5), color='white',
                     icon_color=self.__colour(instances.iloc[i]['decimal']))

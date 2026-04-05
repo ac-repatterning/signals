@@ -1,5 +1,7 @@
 """Module data.py"""
+
 import logging
+
 import os
 import sys
 
@@ -65,7 +67,11 @@ class Data:
             return geopandas.GeoDataFrame()
 
         # noinspection PyTypeChecker
-        return pd.concat(initial, axis=0, ignore_index=True)
+        data: geopandas.GeoDataFrame = pd.concat(initial, axis=0, ignore_index=True)
+        data.sort_values(by=['modified'], ascending=False, inplace=True)
+        data.drop_duplicates(subset=['ts_id', 'catchment_id'], keep='first', inplace=True, ignore_index=True)
+
+        return data
 
     @staticmethod
     def __exit():

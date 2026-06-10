@@ -18,7 +18,7 @@ class Temporary:
         Constructor
         """
 
-        self.__minutes = 35
+        self.__minutes = 15
 
         # Instances
         self.__configurations = config.Config()
@@ -36,7 +36,7 @@ class Temporary:
                 filename=self.__configurations.area_)
             frame['warningId'] = str(uuid.uuid4())
             frame['validFromDate'] = baseline + datetime.timedelta(minutes=self.__minutes)
-            frame['validToDate'] = baseline + datetime.timedelta(minutes=3*self.__minutes)
+            frame['validToDate'] = baseline + datetime.timedelta(minutes=5*self.__minutes)
             return frame
         except FileNotFoundError as err:
             raise err from err

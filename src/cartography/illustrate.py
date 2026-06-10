@@ -1,16 +1,15 @@
 """Module illustrate.py"""
 
-import logging
 import os
 
 import folium
 import folium.plugins
 import geopandas
-import pandas as pd
 
 import config
 import src.cartography.centroids
 import src.cartography.membership
+import src.cartography.metadata
 
 
 class Illustrate:
@@ -25,11 +24,14 @@ class Illustrate:
         :param latest: The overarching catchments
         """
 
-        self.__data, self.__colour = src.cartography.membership.Membership().exc(data=data)
+        self.__data, _ = src.cartography.membership.Membership().exc(data=data)
         self.__latest = latest
 
         # Configurations
         self.__configurations = config.Config()
+
+        # Metadata: Gauge Station
+        self.__metadata = src.cartography.metadata.Metadata()
 
         # Centroid
         self.__c_latitude, self.__c_longitude = src.cartography.centroids.Centroids(blob=self.__data)()
@@ -59,28 +61,17 @@ class Illustrate:
         ).add_to(segments)
 
         # Gauge Stations
-        for c in self.__data.columns:
-            if self.__data[c].dtype == pd.Timestamp:
-                logging.info('TIMESTAMP: %s', c)
-
-        instances = self.__data.copy()[['catchment_name', 'station_name', 'river_name',
-                                        'latitude', 'longitude', 'decimal', 'geometry']]
-
-        clustering = folium.plugins.MarkerCluster(overlay=True, control=False, name='Gauge Stations',
-                                                  options={'maxClusterRadius': 60})
-        for i in range(instances.shape[0]):
-            river_name = instances.iloc[i]['river_name'] if isinstance(instances.iloc[i]['river_name'], str) else ''
-            marking = folium.Marker(
-                location=[instances.iloc[i]['latitude'], instances.iloc[i]['longitude']],
-                popup= '<b>' + instances.iloc[i]['station_name'] + '</b><br><br><b>Catchment: </b>' +
-                       instances.iloc[i]['catchment_name'] + '<br><br><b>River/Water: </b>' +
-                       river_name + '<br>',
-                icon=folium.Icon(
-                    prefix='fa', icon='circle', icon_size=(0.5,0.5), color='white',
-                    icon_color=self.__colour(instances.iloc[i]['decimal']))
-            )
-            clustering.add_child(marking)
-        clustering.add_to(segments)
+        instances = self.__data.copy()[['catchment_name', 'station_name', 'river_name', 'latitude', 'longitude', 'geometry']]
+        on_each_feature = folium.utilities.JsCode(self.__metadata())
+        folium.GeoJson(
+            data = instances.to_crs(epsg=3857),
+            name = 'Gauge Stations',
+            marker=folium.CircleMarker(
+                radius=11.5, weight=4, stroke=False, fill=True, fillColor='#000000', fillOpacity=0.85, ),
+            zoom_on_click=True,
+            on_each_feature=on_each_feature,
+            show=True
+        ).add_to(segments)
 
         # Control Layer
         folium.LayerControl().add_to(segments)

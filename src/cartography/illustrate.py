@@ -1,6 +1,5 @@
 """Module illustrate.py"""
 
-import logging
 import os
 
 import folium
@@ -25,7 +24,7 @@ class Illustrate:
         :param latest: The overarching catchments
         """
 
-        self.__data, self.__colour = src.cartography.membership.Membership().exc(data=data)
+        self.__data, _ = src.cartography.membership.Membership().exc(data=data)
         self.__latest = latest
 
         # Configurations

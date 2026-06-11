@@ -29,7 +29,7 @@ class Temporary:
         :return:
         """
 
-        baseline = datetime.datetime.now(zoneinfo.ZoneInfo('UTC'))
+        baseline = datetime.datetime.now(zoneinfo.ZoneInfo('Europe/London'))
 
         try:
             frame = geopandas.read_file(

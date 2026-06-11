@@ -36,7 +36,7 @@ class Interface:
         """
 
         _initial = value.to_pydatetime()
-        _reset = datetime.datetime.fromtimestamp(_initial.timestamp(), tz=zoneinfo.ZoneInfo('UTC'))
+        _reset = datetime.datetime.fromtimestamp(_initial.timestamp(), tz=zoneinfo.ZoneInfo('Europe/London'))
 
         return _reset
 
@@ -55,14 +55,16 @@ class Interface:
 
     def exc(self, data: geopandas.GeoDataFrame):
         """
+        value: pd.Timestamp = value.ceil(freq='h')
 
         :param data:
         :return:
         """
 
         # Cloud Compute Times: The data times and the cloud compute times exist within different zones
-        value: pd.Timestamp = max(data['starting'].min(), pd.Timestamp(datetime.datetime.now(), tz=zoneinfo.ZoneInfo('UTC')))
-        # value: pd.Timestamp = value.ceil(freq='h')
+        value: pd.Timestamp = max(data['starting'].min(),
+                                  pd.Timestamp(datetime.datetime.now(), tz=zoneinfo.ZoneInfo('Europe/London')))
+
         starting = self.__timestamp(value = value)
         ending = self.__timestamp(value = max(data['ending'].max().ceil(freq='h'), value + datetime.timedelta(hours=1)))
 

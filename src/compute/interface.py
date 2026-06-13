@@ -64,9 +64,8 @@ class Interface:
         # Cloud Compute Times: The data times and the cloud compute times exist within different zones
         value: pd.Timestamp = max(data['starting'].min(),
                                   pd.Timestamp(datetime.datetime.now(), tz=zoneinfo.ZoneInfo('Europe/London')))
-
         starting = self.__timestamp(value = value)
-        ending = self.__timestamp(value = max(data['ending'].max().ceil(freq='h'), value + datetime.timedelta(hours=1)))
+        ending = self.__timestamp(value = max(data['ending'].max().ceil(freq='h'), value + datetime.timedelta(hours=2)))
 
         # Schedule Client
         __schedule_client = self.__connector.client(service_name='scheduler')
